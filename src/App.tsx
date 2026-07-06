@@ -52,7 +52,7 @@ export default function App() {
       {/* Bottom Bar Info */}
       <footer className="h-12 border-t border-[#DCDCCF] px-4 md:px-8 flex items-center justify-center text-xs text-[#8A8A78] shrink-0 bg-white">
         <div>
-          &copy; {new Date().getFullYear()} <strong>পূর্বধলার দর্পন</strong> - সর্বস্বত্ব সংরক্ষিত।
+          &copy; {new Date().getFullYear()} <a href="https://pdonline.com.bd" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-[#5A5A40] transition-colors">পূর্বধলার দর্পন</a> - সর্বস্বত্ব সংরক্ষিত।
         </div>
       </footer>
     </div>
