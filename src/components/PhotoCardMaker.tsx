@@ -21,8 +21,12 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
   const [ytText, setYtText] = useState<string>('@purbadhala');
   const [webText, setWebText] = useState<string>('www.pdonline.com.bd');
 
-  const [activeTemplate, setActiveTemplate] = useState<number>(1);
+  const [activeTemplate, setActiveTemplate] = useState<number>(2);
   
+  const [isTemplate1Unlocked, setIsTemplate1Unlocked] = useState(false);
+  const [template1Password, setTemplate1Password] = useState('');
+  const [showPasswordInput, setShowPasswordInput] = useState(false);
+
   const cardRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -118,17 +122,50 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
           <label className="block font-semibold mb-2 text-[#94a3b8] text-sm">১. ডিজাইন টেমপ্লেট নির্বাচন করুন:</label>
           <div className="grid grid-cols-2 gap-2">
             {[1, 2, 3, 4].map(t => (
-              <button
-                key={t}
-                onClick={() => setActiveTemplate(t)}
-                className={`py-2 px-3 rounded-lg text-sm font-bold border transition-all ${
-                  activeTemplate === t 
-                  ? 'bg-[#38bdf8] text-white border-[#38bdf8]' 
-                  : 'bg-[#0f172a] text-[#94a3b8] border-[#334155] hover:border-[#38bdf8]'
-                }`}
-              >
-                ডিজাইন {t}
-              </button>
+              <div key={t} className="relative">
+                <button
+                  onClick={() => {
+                    if (t === 1 && !isTemplate1Unlocked) {
+                      setShowPasswordInput(!showPasswordInput);
+                    } else {
+                      setActiveTemplate(t);
+                      setShowPasswordInput(false);
+                    }
+                  }}
+                  className={`w-full py-2 px-3 rounded-lg text-sm font-bold border transition-all ${
+                    activeTemplate === t 
+                    ? 'bg-[#38bdf8] text-white border-[#38bdf8]' 
+                    : 'bg-[#0f172a] text-[#94a3b8] border-[#334155] hover:border-[#38bdf8]'
+                  }`}
+                >
+                  ডিজাইন {t} {t === 1 && !isTemplate1Unlocked && '🔒'}
+                </button>
+                {t === 1 && showPasswordInput && !isTemplate1Unlocked && (
+                  <div className="absolute top-full left-0 mt-1 w-full bg-[#1e293b] p-2 border border-[#334155] rounded-lg z-10 shadow-xl">
+                    <input 
+                      type="password" 
+                      placeholder="পাসওয়ার্ড দিন" 
+                      className="w-full p-2 text-sm bg-[#0f172a] text-white border border-[#334155] rounded mb-2 focus:outline-none focus:border-[#38bdf8]"
+                      value={template1Password}
+                      onChange={(e) => setTemplate1Password(e.target.value)}
+                    />
+                    <button 
+                      onClick={() => {
+                        if(template1Password === 'pdonline') {
+                          setIsTemplate1Unlocked(true);
+                          setActiveTemplate(1);
+                          setShowPasswordInput(false);
+                        } else {
+                          alert('ভুল পাসওয়ার্ড! এটি শুধুমাত্র অ্যাডমিনদের জন্য।');
+                        }
+                      }}
+                      className="w-full bg-[#38bdf8] text-white font-bold text-xs py-2 rounded hover:bg-[#0284c7] transition-colors"
+                    >
+                      আনলক করুন
+                    </button>
+                  </div>
+                )}
+              </div>
             ))}
           </div>
         </div>
