@@ -54,7 +54,7 @@ export default function App() {
         <div className="bg-white p-6 md:p-8 rounded-[24px] border border-[#DCDCCF] shadow-sm">
           <h2 className="text-2xl font-bold mb-4 text-[#2C2C24]">Purbadhala PhotoCard Maker ও Image Optimizer সম্পর্কে</h2>
           <p className="mb-4 leading-relaxed">
-            পূর্বধলার দর্পন স্টুডিও (Purbadhala PhotoCard Maker) হলো একটি প্রফেশনাল, নির্ভরযোগ্য এবং সহজে ব্যবহারযোগ্য অনলাইন টুল। সাংবাদিক, নিউজ পোর্টাল অ্যাডমিন, এবং কন্টেন্ট ক্রিয়েটরদের কথা মাথায় রেখে এই টুলটি ডিজাইন করা হয়েছে। এর মাধ্যমে আপনি খুব সহজেই যেকোনো খবরের জন্য দৃষ্টিনন্দন ফটোকার্ড বা নিউজ কার্ড তৈরি করতে পারবেন। 
+            পূর্বধলার দর্পন স্টুডিও (Purbadhala PhotoCard Maker) হলো একটি <strong>সম্পূর্ণ ফ্রি</strong>, নির্ভরযোগ্য এবং সহজে ব্যবহারযোগ্য অনলাইন টুল। সাংবাদিক, নিউজ পোর্টাল অ্যাডমিন, এবং কন্টেন্ট ক্রিয়েটরদের কথা মাথায় রেখে এই টুলটি ডিজাইন করা হয়েছে। এর মাধ্যমে আপনি খুব সহজেই যেকোনো খবরের জন্য দৃষ্টিনন্দন ফটোকার্ড বা নিউজ কার্ড তৈরি করতে পারবেন। 
           </p>
           
           <h3 className="text-lg font-bold mt-6 mb-3 text-[#2C2C24]">প্রধান ফিচারসমূহ (Key Features):</h3>
@@ -74,9 +74,34 @@ export default function App() {
             <li>সবশেষে নিচে থাকা <strong>"ফটোকার্ড ডাউনলোড করুন"</strong> বাটনে ক্লিক করে ছবিটি সেভ করুন এবং সোশ্যাল মিডিয়ায় শেয়ার করুন।</li>
           </ol>
 
+          <div className="mt-8 pt-6 border-t border-[#DCDCCF]">
+            <h3 className="text-lg font-bold mb-3 text-[#2C2C24]">যোগাযোগ ও মতামত</h3>
+            <p className="text-sm md:text-base mb-2">
+              আপনার যদি নতুন কোনো ডিজাইনের পরামর্শ থাকে অথবা এই টুলটি সম্পর্কে কোনো মতামত জানাতে চান, তাহলে আমাদের সাথে যোগাযোগ করতে পারেন:
+            </p>
+            <div className="flex flex-col gap-2 mt-4">
+              <p className="flex items-center gap-2">
+                <strong>ইমেইল:</strong> <a href="mailto:infopurbadhala@gmail.com" className="text-blue-600 hover:underline">infopurbadhala@gmail.com</a>
+              </p>
+              <p className="flex items-center gap-2">
+                <strong>হোয়াটসঅ্যাপ / মোবাইল:</strong> <a href="tel:+8801911397107" className="text-blue-600 hover:underline">+8801911397107</a>
+              </p>
+            </div>
+          </div>
+
           <p className="mt-6 text-sm text-[#8A8A78] italic border-t border-[#DCDCCF] pt-4">
-            * এটি একটি সম্পূর্ণ ওয়েব-ভিত্তিক টুল। দ্রুত কাজ করার জন্য এবং খবরের সোশ্যাল মিডিয়া রিচ বাড়াতে পূর্বধলার দর্পন স্টুডিও আপনার নিত্যদিনের সঙ্গী হতে পারে।
+            * এটি একটি সম্পূর্ণ ওয়েব-ভিত্তিক ফ্রি টুল। দ্রুত কাজ করার জন্য এবং খবরের সোশ্যাল মিডিয়া রিচ বাড়াতে পূর্বধলার দর্পন স্টুডিও আপনার নিত্যদিনের সঙ্গী হতে পারে।
           </p>
+        </div>
+
+        {/* Google AdSense Auto Ads Placeholder */}
+        <div className="mt-8 text-center min-h-[100px] w-full bg-gray-50 border border-dashed border-gray-300 rounded-xl flex items-center justify-center p-4">
+           {/* Add your Google AdSense Auto Ad code here or let auto-ads populate this area */}
+           <ins className="adsbygoogle"
+                style={{ display: 'block', minWidth: '300px', width: '100%' }}
+                data-ad-client="ca-pub-8947162022115848"
+                data-ad-format="auto"
+                data-full-width-responsive="true"></ins>
         </div>
       </section>
 
