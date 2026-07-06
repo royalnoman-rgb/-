@@ -121,14 +121,14 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
         <div className="mb-4">
           <label className="block font-semibold mb-2 text-[#94a3b8] text-sm">১. ডিজাইন টেমপ্লেট নির্বাচন করুন:</label>
           <div className="grid grid-cols-2 gap-2">
-            {[1, 2, 3, 4].map(t => (
+            {[1, 2, 3, 4, 5, 6].map(t => (
               <div key={t} className="relative">
                 <button
                   onClick={() => {
+                    setActiveTemplate(t);
                     if (t === 1 && !isTemplate1Unlocked) {
-                      setShowPasswordInput(!showPasswordInput);
+                      setShowPasswordInput(true);
                     } else {
-                      setActiveTemplate(t);
                       setShowPasswordInput(false);
                     }
                   }}
@@ -140,7 +140,7 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
                 >
                   ডিজাইন {t} {t === 1 && !isTemplate1Unlocked && '🔒'}
                 </button>
-                {t === 1 && showPasswordInput && !isTemplate1Unlocked && (
+                {t === 1 && showPasswordInput && !isTemplate1Unlocked && activeTemplate === 1 && (
                   <div className="absolute top-full left-0 mt-1 w-full bg-[#1e293b] p-2 border border-[#334155] rounded-lg z-10 shadow-xl">
                     <input 
                       type="password" 
@@ -153,7 +153,6 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
                       onClick={() => {
                         if(template1Password === 'pdonline') {
                           setIsTemplate1Unlocked(true);
-                          setActiveTemplate(1);
                           setShowPasswordInput(false);
                         } else {
                           alert('ভুল পাসওয়ার্ড! এটি শুধুমাত্র অ্যাডমিনদের জন্য।');
@@ -233,8 +232,16 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
           </div>
         </div>
         
-        <button onClick={download} className="w-full py-4 bg-gradient-to-br from-[#38bdf8] to-[#0369a1] text-white rounded-xl text-lg font-bold shadow-[0_4px_15px_rgba(56,189,248,0.2)] hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(56,189,248,0.4)] transition-all">
-          ফটোকার্ড ডাউনলোড করুন
+        <button 
+          onClick={activeTemplate === 1 && !isTemplate1Unlocked ? undefined : download} 
+          disabled={activeTemplate === 1 && !isTemplate1Unlocked}
+          className={`w-full py-4 rounded-xl text-lg font-bold shadow-[0_4px_15px_rgba(56,189,248,0.2)] transition-all ${
+            activeTemplate === 1 && !isTemplate1Unlocked 
+            ? 'bg-gray-600 text-gray-300 cursor-not-allowed opacity-70' 
+            : 'bg-gradient-to-br from-[#38bdf8] to-[#0369a1] text-white hover:-translate-y-0.5 hover:shadow-[0_6px_20px_rgba(56,189,248,0.4)]'
+          }`}
+        >
+          {activeTemplate === 1 && !isTemplate1Unlocked ? 'ডিজাইন ১ অ্যাডমিনদের জন্য (লকড)' : 'ফটোকার্ড ডাউনলোড করুন'}
         </button>
       </div>
 
@@ -442,6 +449,88 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
                     <div className="w-[1px] h-[12px] bg-white/20"></div>
                     <div className="flex items-center gap-1.5 text-[11px] font-bold text-white/80">
                       <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="12" height="12" alt="Website" style={{ filter: 'brightness(0) invert(1)' }} className="opacity-80" />
+                      {webText}
+                    </div>
+                </div>
+              </>
+            )}
+
+            {/* ----- TEMPLATE 5: Modern Emerald Glass ----- */}
+            {activeTemplate === 5 && (
+              <>
+                <div className="absolute top-0 left-0 w-full h-[100px] z-20 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.7) 0%, transparent 100%)' }}></div>
+                
+                <div className="absolute top-[20px] left-[25px] right-[25px] flex justify-between items-start z-30">
+                    <div className="max-w-[160px] h-[45px] flex items-center bg-white/95 px-3 py-1.5 rounded-lg shadow-lg">
+                      {logoSrc && <img src={logoSrc} className="max-w-full max-h-full object-contain" alt="Logo" />}
+                    </div>
+                    <div className="text-right text-white leading-tight bg-black/40 backdrop-blur-md px-3 py-1.5 rounded-lg border border-white/20">
+                        <div className="text-[14px] font-bold text-[#10b981]">{dayName}</div>
+                        <div className="text-[12px] font-medium opacity-90">{engDate}</div>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-[45px] left-[15px] right-[15px] z-30 bg-white/90 backdrop-blur-xl p-5 rounded-t-2xl shadow-[0_-10px_25px_rgba(0,0,0,0.2)] border-t-[5px] border-[#10b981]">
+                    <div className="inline-block bg-[#047857] text-white px-3 py-1 rounded mb-3 font-bold text-[12px] uppercase shadow-sm">
+                      {detailTag}
+                    </div>
+                    <div style={{ fontSize: `${titleFontSize}px` }} className="font-extrabold leading-[1.35] text-[#064e3b]">
+                      {titleText}
+                    </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full h-[45px] bg-[#10b981] z-40 flex items-center justify-around border-t border-black/10">
+                    <div className="flex items-center gap-2 text-[13px] font-bold text-white">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="16" height="16" alt="Facebook" style={{ filter: 'brightness(0) invert(1)' }} />
+                      {fbText}
+                    </div>
+                    <div className="flex items-center gap-2 text-[13px] font-bold text-white">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="22" height="16" alt="YouTube" style={{ filter: 'brightness(0) invert(1)', objectFit: 'contain' }} />
+                      {ytText}
+                    </div>
+                    <div className="flex items-center gap-2 text-[13px] font-bold text-white">
+                      <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="16" height="16" alt="Website" style={{ filter: 'brightness(0) invert(1)' }} />
+                      {webText}
+                    </div>
+                </div>
+              </>
+            )}
+
+            {/* ----- TEMPLATE 6: Bold Yellow & Black (Action) ----- */}
+            {activeTemplate === 6 && (
+              <>
+                <div className="absolute top-0 left-0 w-full h-[80px] z-20 pointer-events-none" style={{ background: 'linear-gradient(180deg, rgba(0,0,0,0.85) 0%, transparent 100%)' }}></div>
+                <div className="absolute bottom-0 left-0 w-full h-[220px] z-20 pointer-events-none" style={{ background: 'linear-gradient(0deg, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 70%, transparent 100%)' }}></div>
+                
+                <div className="absolute top-[20px] left-0 w-full flex justify-between items-center z-30 px-[25px]">
+                    <div className="max-w-[170px] h-[50px] flex items-center">
+                      {logoSrc && <img src={logoSrc} className="max-w-full max-h-full object-contain filter drop-shadow-md" alt="Logo" />}
+                    </div>
+                    <div className="bg-[#eab308] text-black px-3 py-1 font-black text-[14px] uppercase transform skew-x-[-10deg] shadow-lg">
+                        <div className="transform skew-x-[10deg]">{dayName}</div>
+                    </div>
+                </div>
+
+                <div className="absolute bottom-[65px] left-0 right-0 z-30 text-center px-4">
+                    <div className="inline-block bg-black text-[#eab308] px-4 py-1 border-[2px] border-[#eab308] mb-3 font-black text-[14px] uppercase tracking-widest shadow-[4px_4px_0_#eab308]">
+                      {detailTag}
+                    </div>
+                    <div style={{ fontSize: `${titleFontSize}px` }} className="font-black leading-[1.25] text-white drop-shadow-[0_4px_12px_rgba(0,0,0,1)] uppercase tracking-tight mx-auto max-w-[90%]">
+                      {titleText}
+                    </div>
+                </div>
+
+                <div className="absolute bottom-0 left-0 w-full h-[45px] bg-[#eab308] z-40 flex items-center justify-around border-t-4 border-black">
+                    <div className="flex items-center gap-2 text-[13px] font-black text-black uppercase">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/b/b8/2021_Facebook_icon.svg" width="16" height="16" alt="Facebook" style={{ filter: 'brightness(0)' }} />
+                      {fbText}
+                    </div>
+                    <div className="flex items-center gap-2 text-[13px] font-black text-black uppercase">
+                      <img src="https://upload.wikimedia.org/wikipedia/commons/0/09/YouTube_full-color_icon_%282017%29.svg" width="22" height="16" alt="YouTube" style={{ filter: 'brightness(0)', objectFit: 'contain' }} />
+                      {ytText}
+                    </div>
+                    <div className="flex items-center gap-2 text-[13px] font-black text-black uppercase">
+                      <img src="https://cdn-icons-png.flaticon.com/512/1006/1006771.png" width="16" height="16" alt="Website" style={{ filter: 'brightness(0)' }} />
                       {webText}
                     </div>
                 </div>
