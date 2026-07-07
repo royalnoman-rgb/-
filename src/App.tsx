@@ -3,14 +3,53 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ImageOptimizer from './components/ImageOptimizer';
 import PhotoCardMaker from './components/PhotoCardMaker';
-import { Layers, Image as ImageIcon, Newspaper } from 'lucide-react';
+import { Layers, Image as ImageIcon, Newspaper, Users } from 'lucide-react';
+import { doc, getDoc, setDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore';
+import { db } from './firebase';
 
 export default function App() {
   const [activeTab, setActiveTab] = useState<'optimizer' | 'photocard'>('optimizer');
   const [sharedImage, setSharedImage] = useState<string | null>(null);
+  const [visitorCount, setVisitorCount] = useState<number>(1500);
+
+  useEffect(() => {
+    const visitorDocRef = doc(db, 'stats', 'visitors');
+
+    // Subscribe to real-time updates
+    const unsubscribe = onSnapshot(visitorDocRef, (docSnap) => {
+      if (docSnap.exists()) {
+        setVisitorCount(docSnap.data().count);
+      }
+    });
+
+    const initVisitor = async () => {
+      try {
+        const docSnap = await getDoc(visitorDocRef);
+        const hasVisited = localStorage.getItem('hasVisited_purbadhala_db');
+
+        if (!docSnap.exists()) {
+          // Initialize if it doesn't exist
+          await setDoc(visitorDocRef, { count: 1500 + (hasVisited ? 0 : 1) });
+          if (!hasVisited) {
+            localStorage.setItem('hasVisited_purbadhala_db', 'true');
+          }
+        } else if (!hasVisited) {
+          // Increment if new visitor
+          await updateDoc(visitorDocRef, { count: increment(1) });
+          localStorage.setItem('hasVisited_purbadhala_db', 'true');
+        }
+      } catch (error) {
+        console.error("Error updating visitor count:", error);
+      }
+    };
+
+    initVisitor();
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="w-full min-h-screen bg-[#F5F5F0] text-[#434338] font-sans flex flex-col">
@@ -106,9 +145,13 @@ export default function App() {
       </section>
 
       {/* Bottom Bar Info */}
-      <footer className="h-12 border-t border-[#DCDCCF] px-4 md:px-8 flex items-center justify-center text-xs text-[#8A8A78] shrink-0 bg-white">
+      <footer className="py-4 border-t border-[#DCDCCF] px-4 md:px-8 flex flex-col md:flex-row items-center justify-between text-xs text-[#8A8A78] shrink-0 bg-white gap-2">
         <div>
           &copy; {new Date().getFullYear()} <a href="https://pdonline.com.bd" target="_blank" rel="noopener noreferrer" className="font-bold hover:text-[#5A5A40] transition-colors">পূর্বধলার দর্পন</a> - সর্বস্বত্ব সংরক্ষিত।
+        </div>
+        <div className="flex items-center gap-1.5 bg-[#F5F5F0] px-3 py-1.5 rounded-full border border-[#E5E5DE]">
+          <Users size={14} className="text-[#5A5A40]" />
+          <span className="font-medium text-[#5A5A40]">মোট ভিজিটর: {visitorCount.toLocaleString('bn-BD')}</span>
         </div>
       </footer>
     </div>

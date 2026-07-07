@@ -1,0 +1,15 @@
+{
+  "collections": {
+    "stats": {
+      "description": "Store application-wide stats like visitors",
+      "documentId": "visitors",
+      "fields": {
+        "count": "number"
+      },
+      "securityRules": {
+        "read": "true",
+        "write": "true"
+      }
+    }
+  }
+}
