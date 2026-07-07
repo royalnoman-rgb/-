@@ -28,6 +28,28 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
   const [showPasswordInput, setShowPasswordInput] = useState(false);
 
   const cardRef = useRef<HTMLDivElement>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(1);
+
+  useEffect(() => {
+    const updateScale = () => {
+      if (previewContainerRef.current) {
+        const isMd = window.innerWidth >= 768;
+        const offset = isMd ? 32 : 16; // border + padding space
+        const containerWidth = previewContainerRef.current.offsetWidth;
+        const innerWidth = containerWidth - offset;
+        if (innerWidth < 540) {
+          setPreviewScale(innerWidth / 540);
+        } else {
+          setPreviewScale(1);
+        }
+      }
+    };
+    
+    updateScale();
+    window.addEventListener('resize', updateScale);
+    return () => window.removeEventListener('resize', updateScale);
+  }, []);
 
   useEffect(() => {
     updateDate();
@@ -88,12 +110,14 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
   const download = () => {
     if (cardRef.current) {
         htmlToImage.toPng(cardRef.current, { 
-            pixelRatio: 2, 
+            canvasWidth: 1080,
+            canvasHeight: 1080,
             width: 540,
             height: 540,
             style: {
-              transform: 'scale(1)',
-              transformOrigin: 'top left'
+              transform: 'scale(2)',
+              transformOrigin: 'top left',
+              margin: '0'
             }
         }).then(dataUrl => {
             const link = document.createElement('a'); 
@@ -246,13 +270,27 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
       </div>
 
       {/* Preview Area */}
-      <div className="flex-1 flex justify-center items-start pt-4 lg:pt-0">
-        <div className="border-[8px] border-[#1e293b] rounded-xl shadow-2xl p-2 bg-[#0f172a]">
-          <div 
-            ref={cardRef} 
-            className="relative bg-[#111] overflow-hidden" 
-            style={{ width: '540px', height: '540px', fontFamily: "'SolaimanLipi', sans-serif" }}
-          >
+      <div className="flex-1 flex justify-center items-start pt-4 lg:pt-0 w-full overflow-hidden">
+        <div 
+          ref={previewContainerRef}
+          className="border-[4px] md:border-[8px] border-[#1e293b] rounded-xl shadow-2xl p-1 md:p-2 bg-[#0f172a] w-full max-w-[556px] mx-auto flex justify-center items-center overflow-hidden aspect-square relative"
+        >
+          <div className="absolute inset-1 md:inset-2 overflow-hidden flex justify-center items-center">
+            <div
+              style={{ 
+                width: '540px', 
+                height: '540px', 
+                transform: `scale(${previewScale})`,
+                transformOrigin: 'center'
+              }}
+            >
+              <div 
+                ref={cardRef} 
+                className="relative bg-[#111] overflow-hidden w-[540px] h-[540px]" 
+                style={{ 
+                  fontFamily: "'SolaimanLipi', sans-serif",
+                }}
+              >
             {/* Main Image Layer */}
             <div className="absolute inset-0 flex items-center justify-center z-10 overflow-hidden">
                 {mainImgSrc && (
@@ -537,6 +575,8 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
               </>
             )}
 
+            </div>
+          </div>
           </div>
         </div>
       </div>
