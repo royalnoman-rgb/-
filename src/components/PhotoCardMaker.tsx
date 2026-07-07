@@ -110,12 +110,11 @@ export default function PhotoCardMaker({ sharedImage }: { sharedImage?: string |
   const download = () => {
     if (cardRef.current) {
         htmlToImage.toPng(cardRef.current, { 
-            canvasWidth: 1080,
-            canvasHeight: 1080,
+            pixelRatio: 2,
             width: 540,
             height: 540,
             style: {
-              transform: 'scale(2)',
+              transform: 'scale(1)',
               transformOrigin: 'top left',
               margin: '0'
             }
