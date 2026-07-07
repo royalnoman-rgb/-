@@ -6,12 +6,18 @@
 import React, { useState, useEffect } from 'react';
 import ImageOptimizer from './components/ImageOptimizer';
 import PhotoCardMaker from './components/PhotoCardMaker';
-import { Layers, Image as ImageIcon, Newspaper, Users } from 'lucide-react';
+import BijoyUnicodeConverter from './components/BijoyUnicodeConverter';
+import VoiceTyping from './components/VoiceTyping';
+import WordCounter from './components/WordCounter';
+import SpellChecker from './components/SpellChecker';
+import HeadlineGenerator from './components/HeadlineGenerator';
+import SeoTagGenerator from './components/SeoTagGenerator';
+import { Layers, Image as ImageIcon, Newspaper, Users, Keyboard, Mic, Type, SpellCheck, Heading, Search } from 'lucide-react';
 import { doc, getDoc, setDoc, updateDoc, increment, onSnapshot } from 'firebase/firestore';
 import { db } from './firebase';
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<'optimizer' | 'photocard'>('optimizer');
+  const [activeTab, setActiveTab] = useState<'optimizer' | 'photocard' | 'bijoy' | 'voice' | 'counter' | 'spellcheck' | 'headline' | 'seo'>('optimizer');
   const [sharedImage, setSharedImage] = useState<string | null>(null);
   const [visitorCount, setVisitorCount] = useState<number>(1500);
 
@@ -63,19 +69,57 @@ export default function App() {
         </div>
         
         {/* Navigation Tabs */}
-        <div className="flex items-center bg-[#F5F5F0] p-1 rounded-xl">
-          <button 
-            onClick={() => setActiveTab('optimizer')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'optimizer' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
-          >
-            <ImageIcon size={16} /> <span>ইমেজ অপ্টিমাইজার</span>
-          </button>
-          <button 
-            onClick={() => setActiveTab('photocard')}
-            className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'photocard' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
-          >
-            <Newspaper size={16} /> <span>ফটোকার্ড মেকার</span>
-          </button>
+        <div className="flex items-center bg-[#F5F5F0] p-1 rounded-xl overflow-x-auto w-full md:w-auto mt-2 md:mt-0 no-scrollbar">
+          <div className="flex gap-1 min-w-max">
+            <button 
+              onClick={() => setActiveTab('optimizer')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'optimizer' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <ImageIcon size={16} /> <span>ইমেজ অপ্টিমাইজার</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('photocard')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'photocard' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <Newspaper size={16} /> <span>ফটোকার্ড মেকার</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('bijoy')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'bijoy' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <Keyboard size={16} /> <span>বিজয়-ইউনিকোড</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('voice')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'voice' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <Mic size={16} /> <span>ভয়েস টাইপিং</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('counter')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'counter' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <Type size={16} /> <span>ওয়ার্ড কাউন্টার</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('spellcheck')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'spellcheck' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <SpellCheck size={16} /> <span>বানান পরীক্ষক</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('headline')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'headline' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <Heading size={16} /> <span>শিরোনাম মেকার</span>
+            </button>
+            <button 
+              onClick={() => setActiveTab('seo')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-bold flex items-center gap-2 transition-all ${activeTab === 'seo' ? 'bg-white text-[#5A5A40] shadow-sm' : 'text-[#8A8A78] hover:text-[#5A5A40]'}`}
+            >
+              <Search size={16} /> <span>এসইও ট্যাগ</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -83,7 +127,14 @@ export default function App() {
       <main className="flex-1 flex flex-col p-4 md:p-6 min-h-0">
         <section className="flex-1 max-w-7xl mx-auto w-full flex flex-col min-h-0 bg-white rounded-[24px] sm:rounded-[32px] border border-[#DCDCCF] shadow-sm overflow-hidden">
           <div className="flex-1 flex flex-col overflow-hidden">
-              {activeTab === 'optimizer' ? <ImageOptimizer onSendToPhotocard={(url) => { setSharedImage(url); setActiveTab('photocard'); }} /> : <PhotoCardMaker sharedImage={sharedImage} />}
+              {activeTab === 'optimizer' && <ImageOptimizer onSendToPhotocard={(url) => { setSharedImage(url); setActiveTab('photocard'); }} />}
+              {activeTab === 'photocard' && <PhotoCardMaker sharedImage={sharedImage} />}
+              {activeTab === 'bijoy' && <BijoyUnicodeConverter />}
+              {activeTab === 'voice' && <VoiceTyping />}
+              {activeTab === 'counter' && <WordCounter />}
+              {activeTab === 'spellcheck' && <SpellChecker />}
+              {activeTab === 'headline' && <HeadlineGenerator />}
+              {activeTab === 'seo' && <SeoTagGenerator />}
           </div>
         </section>
       </main>
